@@ -1,0 +1,44 @@
+# Installs every app in bucket/ with Scoop on a real Windows runner and checks
+# that it reports the version its manifest names. Each app here is a command
+# with the manifest's name that answers --version.
+name: scoop install
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  install:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Install Scoop
+        shell: pwsh
+        run: |
+          # Scoop's own installer; -RunAsAdmin because the runner's user is an administrator
+          Invoke-RestMethod https://get.scoop.sh -OutFile "$env:RUNNER_TEMP\install-scoop.ps1"
+          & "$env:RUNNER_TEMP\install-scoop.ps1" -RunAsAdmin
+          Add-Content $env:GITHUB_PATH "$env:USERPROFILE\scoop\shims"
+
+      - name: Install every app and run it
+        shell: pwsh
+        run: |
+          scoop bucket add manefunction "$env:GITHUB_WORKSPACE"
+          $apps = Get-ChildItem bucket -Filter *.json
+          if (-not $apps) { Write-Host 'The bucket has no apps yet.'; exit 0 }
+          foreach ($app in $apps) {
+            $name = $app.BaseName
+            $version = (Get-Content $app.FullName -Raw | ConvertFrom-Json).version
+            scoop install "manefunction/$name"
+            if ($LASTEXITCODE) { throw "scoop install $name failed" }
+            $out = & $name --version
+            Write-Host "$name --version: $out"
+            if ($out -notmatch [regex]::Escape($version)) { throw "$name reports '$out', the manifest says $version" }
+          }
