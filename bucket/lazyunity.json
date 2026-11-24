@@ -1,0 +1,22 @@
+{
+    "version": "0.1.0",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/ManeFunction/lazyunity/releases/download/v0.1.0/lazyunity_0.1.0_windows_amd64.zip",
+            "bin": [
+                "lazyunity.exe"
+            ],
+            "hash": "dca8103bdb749f1d2f56478af3c6b0252832d25eba09db0885891af7836d789a"
+        },
+        "arm64": {
+            "url": "https://github.com/ManeFunction/lazyunity/releases/download/v0.1.0/lazyunity_0.1.0_windows_arm64.zip",
+            "bin": [
+                "lazyunity.exe"
+            ],
+            "hash": "b20025948645d4b0c7982614ff60adf149f2d13b9cd01e72a876624a412de54a"
+        }
+    },
+    "homepage": "https://github.com/ManeFunction/lazyunity",
+    "license": "MIT",
+    "description": "A terminal interface for Unity projects and Editors, driven with lazygit's keys."
+}
