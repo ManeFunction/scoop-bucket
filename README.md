@@ -9,7 +9,7 @@ then: `scoop install <app>`, once the bucket is added.
 
 ## Available Apps
 
-- [lazyunity](https://github.com/ManeFunction/lazyunity) - Lazygit-style terminal UI for Unity projects and Editors.
+- [lazyunity](https://github.com/ManeFunction/lazyunity) - A CLI for Unity projects and Editors, built on top of the official Unity CLI and inspired by lazygit.
 
 ## Documentation
 
