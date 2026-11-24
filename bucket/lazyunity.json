@@ -18,5 +18,5 @@
     },
     "homepage": "https://github.com/ManeFunction/lazyunity",
     "license": "MIT",
-    "description": "A terminal interface for Unity projects and Editors, driven with lazygit's keys."
+    "description": "A CLI for Unity projects and Editors, built on top of the official Unity CLI and inspired by lazygit."
 }
