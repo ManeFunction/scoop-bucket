@@ -30,13 +30,14 @@ jobs:
       - name: Install every app and run it
         shell: pwsh
         run: |
-          scoop bucket add manefunction "$env:GITHUB_WORKSPACE"
+          # Straight from the manifest file: `scoop bucket add` with a local path fails
+          # ("is not a valid Git URL") on current Scoop.
           $apps = Get-ChildItem bucket -Filter *.json
           if (-not $apps) { Write-Host 'The bucket has no apps yet.'; exit 0 }
           foreach ($app in $apps) {
             $name = $app.BaseName
             $version = (Get-Content $app.FullName -Raw | ConvertFrom-Json).version
-            scoop install "manefunction/$name"
+            scoop install $app.FullName
             if ($LASTEXITCODE) { throw "scoop install $name failed" }
             $out = & $name --version
             Write-Host "$name --version: $out"
